@@ -2,6 +2,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class NeuralNetwork : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class NeuralNetwork : MonoBehaviour
     [SerializeField] GameObject SinapsisPref;
     //
     Dictionary<string, LineRenderer> Sinopsises = new Dictionary<string, LineRenderer>();
+
+    string weightsFilePath;
+    string weightsBackupFilePath;
 
     /*=================МЕТОДЫ=================*/
     //Добавление слоев
@@ -103,9 +107,48 @@ public class NeuralNetwork : MonoBehaviour
     //Получить веса из файла
     void ReadWeights()
     {
-        string[] weightsData = File.ReadAllLines(Application.dataPath + "/NeuralNetworkData/weights.txt");
+        weights.Clear();
 
-        Debug.Log(weightsData.Length);
+        string[] weightsDataLines = File.ReadAllLines(weightsFilePath);
+
+        foreach(string weightDataLine in weightsDataLines)
+        {
+            string weightKey = weightDataLine.Split(':')[0];
+            double weightValue = Convert.ToDouble(weightDataLine.Split(':')[1]);
+
+            weights.Add(weightKey, weightValue);
+        }
+    }
+    //Сохранить предыдущие веса
+    void SaveBackupWeights()
+    {
+        File.WriteAllText(weightsBackupFilePath, "");
+
+        if(!File.Exists(weightsBackupFilePath)) {
+            File.Create(weightsBackupFilePath);
+        }
+
+        if(File.Exists(weightsBackupFilePath) && File.Exists(weightsFilePath)) {
+            File.AppendAllLines(weightsBackupFilePath, File.ReadAllLines(weightsFilePath));
+        } else
+        {
+            Debug.LogError("Can't write backup weights");
+        }
+    }
+    //Сохранить веса
+    void SaveWeights()
+    {
+        File.WriteAllText(weightsFilePath, "");
+
+        if(!File.Exists(weightsFilePath))
+        {
+            File.Create(weightsFilePath);
+        }
+
+        foreach(KeyValuePair<string, double> weight in weights)
+        {
+            File.AppendAllText(weightsFilePath, $"{weight.Key}:{weight.Value}\n");
+        }
     }
     //Сгенерировать рандомные веса
     void GenerateRandWeights(double maxNum, double minNum = 0)
@@ -114,9 +157,9 @@ public class NeuralNetwork : MonoBehaviour
 
         for (int lI = 1; lI < Layers.Count; lI++)
         {
-            for (int nI = 0; nI <= Layers[lI].Neurons.Count; nI++)
+            for (int nI = 0; nI < Layers[lI].Neurons.Count; nI++)
             {
-                for (int nI_Prev = 0; nI_Prev <= Layers[lI - 1].Neurons.Count; nI_Prev++)
+                for (int nI_Prev = 0; nI_Prev < Layers[lI - 1].Neurons.Count; nI_Prev++)
                 {
                     weights[$"{lI - 1}-{nI_Prev}-{nI}"] = rand.NextDouble() * 2 * maxNum + minNum;
                 }
@@ -204,6 +247,11 @@ public class NeuralNetwork : MonoBehaviour
 
         yield break;
     }
+    //Обратное распространение ошибки
+    void BackPropagation()
+    {
+
+    }
     //Запуск нейронной сети
     public void StartPredict()
     {
@@ -221,14 +269,19 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
+        SaveBackupWeights();
+
         InitWeights();
         GenerateRandWeights(1, -1);
+
+        SaveWeights();
 
         StartCoroutine(ForwardPropagationDelayed());
     }
 
     private void Start()
     {
-        ReadWeights();
+        weightsFilePath = $"{Application.dataPath}/NeuralNetworkData/weights.txt";
+        weightsBackupFilePath = $"{Application.dataPath}/NeuralNetworkData/weightsBackup.txt";
     }
 }

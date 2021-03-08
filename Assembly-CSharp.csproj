@@ -58,12 +58,13 @@
   <ItemGroup>
     <Compile Include="Assets\Project\Scripts\Neuron.cs" />
     <Compile Include="Assets\Project\Scripts\NeuralNetwork.cs" />
-    <Compile Include="Assets\Project\Scripts\NeuralNetworkLayer.cs" />
     <Compile Include="Assets\Project\Scripts\Sinopsis.cs" />
+    <Compile Include="Assets\Project\Scripts\NeuralNetworkLayer.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\NeuralNetworkData\weights.txt" />
      <None Include="Assets\NeuralNetworkData\trainingDataset.txt" />
+     <None Include="Assets\NeuralNetworkData\weightsBackup.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

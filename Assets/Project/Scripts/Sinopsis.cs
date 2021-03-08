@@ -42,8 +42,6 @@ public class Sinopsis : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-
-        yield break;
     }
 
     public IEnumerator SisnapsisSparksAnim(Transform startPos, Transform endPos)
@@ -52,8 +50,6 @@ public class Sinopsis : MonoBehaviour
 
         while(sparks.transform.position != endPos.position)
         {
-            Debug.Log("s");
-
             sparks.transform.position = Vector2.Lerp(sparks.transform.position, endPos.position, 0.02f);
 
             yield return new WaitForEndOfFrame();

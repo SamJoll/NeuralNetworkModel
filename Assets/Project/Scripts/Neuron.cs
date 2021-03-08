@@ -86,8 +86,6 @@ public class Neuron : MonoBehaviour
             {
                 while (GetComponent<SpriteRenderer>().color != idleNeuronColor)
                 {
-                    Debug.Log("s");
-
                     GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, idleNeuronColor, lerpTime);
 
                     yield return new WaitForEndOfFrame();
@@ -96,8 +94,6 @@ public class Neuron : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-
-        yield break;
     }
     private void Awake()
     {
