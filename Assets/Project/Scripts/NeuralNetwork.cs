@@ -57,6 +57,7 @@ public class NeuralNetwork : MonoBehaviour
 
     string weightsFilePath;
     string weightsBackupFilePath;
+    string trainingDatasetPath;
 
     /*=================МЕТОДЫ=================*/
     //Добавление слоев
@@ -183,6 +184,29 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
     }
+    //Получить тренировочный сет
+    void GetTrainingDataset()
+    {
+        foreach(string trainingDataLine in File.ReadAllLines(trainingDatasetPath))
+        {
+            string[] inputsString = trainingDataLine.Split(':')[0].Split(',');
+            string[] outputsString = trainingDataLine.Split(':')[1].Split(',');
+
+            List<double> inputs = new List<double>();
+            List<double> outputs = new List<double>();
+
+            foreach(string inputString in inputsString)
+            {
+                inputs.Add(Convert.ToDouble(inputString));
+            }
+            foreach (string outputString in outputsString)
+            {
+                outputs.Add(Convert.ToDouble(outputString));
+            }
+
+            trainingDataset.Add(new double[][] { inputs.ToArray(), outputs.ToArray() });
+        }
+    }
     //Очистить синопсы
     void ClearSinopsises()
     {
@@ -241,7 +265,7 @@ public class NeuralNetwork : MonoBehaviour
             error += (Math.Pow(trainData[1][nI] - Layers[LayersCount - 1].Neurons[nI].OutputValue, 2));
         }
 
-        return Math.Round(error / (2 * trainData[1].Length), 2);
+        return Math.Round(error, 2) / trainData[1].Length;
     }
     //Прямое распространение
     void ForwardPropagation()
@@ -313,6 +337,8 @@ public class NeuralNetwork : MonoBehaviour
     //Обучение нейронной сети
     IEnumerator Train(int epochCount)
     {
+        GetTrainingDataset();
+
         for (int epoch = 1; epoch <= epochCount; epoch++)
         {
             foreach (double[][] trainData in trainingDataset)
@@ -379,5 +405,6 @@ public class NeuralNetwork : MonoBehaviour
     {
         weightsFilePath = $"{Application.dataPath}/StreamingAssets/NeuralNetworkData/weights.txt";
         weightsBackupFilePath = $"{Application.dataPath}/StreamingAssets/NeuralNetworkData/weightsBackup.txt";
+        trainingDatasetPath = $"{Application.dataPath}/StreamingAssets/NeuralNetworkData/trainingDataset.txt";
     }
 }
