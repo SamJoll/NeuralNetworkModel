@@ -8,4 +8,4 @@
 Сохраненные веса записываются по такому пути NeuralNetworkModel_Data/StreamingAssets/NeuralNetworkData/weights.txt
 Функция задания своей собственной тренировочной выборки отсутствует.</p>
 <h1>Как запустить?</h1>
-<p>Для запуска просто загрузите <a href="https://github.com/SamJoll/NeuralNetworkModel/releases">релиз или пререлиз</a> приложение, распакуйте архив и запустить файл NeuralNetworkModel.exe</p>  
+<p>Для запуска просто загрузите <a href="https://github.com/SamJoll/NeuralNetworkModel/releases">релиз или пререлиз</a> приложения, распакуйте архив и запустить файл NeuralNetworkModel.exe</p>  
