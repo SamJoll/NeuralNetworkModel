@@ -35,8 +35,19 @@ public class NeuralNetwork : MonoBehaviour
     [SerializeField] GameObject LayerPref;
     //Префаб синапсиса
     [SerializeField] GameObject SinapsisPref;
-    //
+    //Синапсы
     Dictionary<string, LineRenderer> Sinopsises = new Dictionary<string, LineRenderer>();
+    //Тренировочный датасет
+    List<double[][]> trainingDataset = new List<double[][]>() { 
+        new double[][] { 
+            new double[] {1, 1},
+            new double[] {1}
+        },
+        new double[][] {
+            new double[] {1, 0},
+            new double[] {0}
+        }
+    };
 
     string weightsFilePath;
     string weightsBackupFilePath;
@@ -176,6 +187,21 @@ public class NeuralNetwork : MonoBehaviour
 
         Sinopsises.Clear();
     }
+    //Сброс всех эффектов синапсов
+    void ClearSinopsisesEffects()
+    {
+        foreach (LineRenderer sinapsis in Sinopsises.Values)
+        {
+            sinapsis.GetComponent<Sinopsis>().isActive = false;
+        }
+        if (GameObject.FindGameObjectsWithTag("Sinopsis Effect").Length > 0)
+        {
+            foreach (GameObject sinapsisEffect in GameObject.FindGameObjectsWithTag("Sinopsis Effect"))
+            {
+                Destroy(sinapsisEffect);
+            }
+        }
+    }
     //Рендер весов
     public void RenderSinopsises()
     {
@@ -248,35 +274,62 @@ public class NeuralNetwork : MonoBehaviour
         yield break;
     }
     //Обратное распространение ошибки
-    void BackPropagation()
+    void BackPropagation(double[][] trainingData)
     {
+        for(int nI = 0; nI < Layers[LayersCount-1].NeuronsCount; nI++)
+        {
+            //Производная сигмоиды
+            double derivative_sigmoid = 
+                (1 - Layers[LayersCount - 1].Neurons[nI].OutputValue) * Layers[LayersCount - 1].Neurons[nI].OutputValue;
+            //Производная ошибки (ideal_Val - sigm(nI))^2
+            double derivative_error = 
+                -2 * (Layers[LayersCount - 1].Neurons[nI].OutputValue - trainingData[1][nI]) * derivative_sigmoid;
 
+            for (int nI_Prev = 0; nI_Prev < Layers[LayersCount-2].NeuronsCount; nI_Prev++)
+            {
+                weights[$"{LayersCount - 2}-{nI_Prev}-{nI}"] -= derivative_error * Layers[LayersCount - 2].Neurons[nI_Prev].OutputValue * 3d;
+            }
+        }
     }
     //Запуск нейронной сети
     public void StartPredict()
     {
-        StopAllCoroutines();
+        ClearSinopsisesEffects();
 
-        foreach(LineRenderer sinapsis in Sinopsises.Values)
-        {
-            sinapsis.GetComponent<Sinopsis>().isActive = false;
-        }
-        if (GameObject.FindGameObjectsWithTag("Sinopsis Effect").Length > 0)
-        {
-            foreach (GameObject sinapsisEffect in GameObject.FindGameObjectsWithTag("Sinopsis Effect"))
-            {
-                Destroy(sinapsisEffect);
-            }
-        }
-
-        SaveBackupWeights();
+        StopAllCoroutines();   
 
         InitWeights();
-        GenerateRandWeights(1, -1);
+        ReadWeights();
 
         SaveWeights();
 
         StartCoroutine(ForwardPropagationDelayed());
+    }
+    //Запуст обучения
+    public void StartTrain()
+    {
+        StopAllCoroutines();
+
+        ClearSinopsisesEffects();
+
+        InitWeights();
+
+        GenerateRandWeights(1, -1);
+
+        for (int epoch = 1; epoch <= 1000000; epoch++)
+        {
+            foreach (double[][] trainData in trainingDataset)
+            {
+                for (int nI = 0; nI < Layers[0].NeuronsCount; nI++)
+                {
+                    Layers[0].Neurons[nI].InputValue = trainData[0][nI];
+                }
+
+                ForwardPropagation();
+
+                BackPropagation(trainData);
+            }
+        }
     }
 
     private void Start()
