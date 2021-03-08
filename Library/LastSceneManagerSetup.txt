@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Project/Scenes/SampleScene.unity
+- path: Assets/Project/Scenes/MainMenuScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

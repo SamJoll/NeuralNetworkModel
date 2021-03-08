@@ -155,12 +155,12 @@ public class NeuralNetwork : MonoBehaviour
     //Сохранить веса
     void SaveWeights()
     {
-        File.WriteAllText(weightsFilePath, "");
-
         if(!File.Exists(weightsFilePath))
         {
             File.Create(weightsFilePath);
         }
+
+        File.WriteAllText(weightsFilePath, "");
 
         foreach(KeyValuePair<string, double> weight in weights)
         {
@@ -289,8 +289,6 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
-        
-
         yield break;
     }
     //Обратное распространение ошибки
@@ -354,8 +352,6 @@ public class NeuralNetwork : MonoBehaviour
         InitWeights();
         ReadWeights();
 
-        SaveWeights();
-
         StartCoroutine(ForwardPropagationDelayed());
     }
     //Запуст обучения
@@ -381,7 +377,7 @@ public class NeuralNetwork : MonoBehaviour
 
     private void Start()
     {
-        weightsFilePath = $"{Application.dataPath}/NeuralNetworkData/weights.txt";
-        weightsBackupFilePath = $"{Application.dataPath}/NeuralNetworkData/weightsBackup.txt";
+        weightsFilePath = $"{Application.dataPath}/StreamingAssets/NeuralNetworkData/weights.txt";
+        weightsBackupFilePath = $"{Application.dataPath}/StreamingAssets/NeuralNetworkData/weightsBackup.txt";
     }
 }
