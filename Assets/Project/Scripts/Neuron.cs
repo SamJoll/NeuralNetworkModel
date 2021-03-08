@@ -57,8 +57,15 @@ public class Neuron : MonoBehaviour
     public float lerpTime = 0;
     //Текст, для отображения значения нейрона
     public Text displayValueText;
+    //
+    public InputField InputValueField;
 
     /*===============МЕТОДЫ===============*/
+    //Получить значения из поля
+    public void GetInputValue()
+    {
+        InputValue = Convert.ToDouble(InputValueField.text);
+    }
     IEnumerator ChangeColorAnim()
     {
         while (true)

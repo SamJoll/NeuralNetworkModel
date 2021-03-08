@@ -60,6 +60,8 @@
     <Compile Include="Assets\Project\Scripts\NeuralNetwork.cs" />
     <Compile Include="Assets\Project\Scripts\Sinopsis.cs" />
     <Compile Include="Assets\Project\Scripts\NeuralNetworkLayer.cs" />
+    <Compile Include="Assets\Project\Scripts\NeuralNetworkPredictManager.cs" />
+    <Compile Include="Assets\Project\Scripts\SceneManager.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\NeuralNetworkData\weights.txt" />

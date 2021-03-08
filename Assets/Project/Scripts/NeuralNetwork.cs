@@ -2,6 +2,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class NeuralNetwork : MonoBehaviour
@@ -35,6 +36,11 @@ public class NeuralNetwork : MonoBehaviour
     [SerializeField] GameObject LayerPref;
     //Префаб синапсиса
     [SerializeField] GameObject SinapsisPref;
+    [Space(50f)]
+    [SerializeField] Text EpochDisplayText;
+    [SerializeField] InputField EpochCountField;
+    [SerializeField] InputField TrainSpeedField;
+    [SerializeField] Text ErrorDisplayText;
     //Синапсы
     Dictionary<string, LineRenderer> Sinopsises = new Dictionary<string, LineRenderer>();
     //Тренировочный датасет
@@ -225,6 +231,18 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
     }
+    //Ошибка
+    public double Error(double[][] trainData)
+    {
+        double error = 0;
+
+        for (int nI = 0; nI < trainData[1].Length; nI++)
+        {
+            error += (Math.Pow(trainData[1][nI] - Layers[LayersCount - 1].Neurons[nI].OutputValue, 2));
+        }
+
+        return Math.Round(error / (2 * trainData[1].Length), 2);
+    }
     //Прямое распространение
     void ForwardPropagation()
     {
@@ -271,6 +289,8 @@ public class NeuralNetwork : MonoBehaviour
             }
         }
 
+        
+
         yield break;
     }
     //Обратное распространение ошибки
@@ -287,9 +307,42 @@ public class NeuralNetwork : MonoBehaviour
 
             for (int nI_Prev = 0; nI_Prev < Layers[LayersCount-2].NeuronsCount; nI_Prev++)
             {
-                weights[$"{LayersCount - 2}-{nI_Prev}-{nI}"] -= derivative_error * Layers[LayersCount - 2].Neurons[nI_Prev].OutputValue * 3d;
+                weights[$"{LayersCount - 2}-{nI_Prev}-{nI}"] -= 
+                    derivative_error * Layers[LayersCount - 2].Neurons[nI_Prev].OutputValue * Convert.ToDouble(TrainSpeedField.text);
             }
         }
+    }
+    //Обучение нейронной сети
+    IEnumerator Train(int epochCount)
+    {
+        for (int epoch = 1; epoch <= epochCount; epoch++)
+        {
+            foreach (double[][] trainData in trainingDataset)
+            {
+                for (int nI = 0; nI < Layers[0].NeuronsCount; nI++)
+                {
+                    Layers[0].Neurons[nI].InputValue = trainData[0][nI];
+                }
+
+                ForwardPropagation();
+
+                BackPropagation(trainData);
+
+                if(EpochDisplayText != null)
+                {
+                    EpochDisplayText.text = $"Эпоха #{Convert.ToString(epoch)}";
+                }
+                if(ErrorDisplayText != null)
+                {
+                    ErrorDisplayText.text = $"Ошибка {Error(trainData) * 100}%";
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        SaveWeights();
+
+        yield break;
     }
     //Запуск нейронной сети
     public void StartPredict()
@@ -316,20 +369,14 @@ public class NeuralNetwork : MonoBehaviour
 
         GenerateRandWeights(1, -1);
 
-        for (int epoch = 1; epoch <= 1000000; epoch++)
-        {
-            foreach (double[][] trainData in trainingDataset)
-            {
-                for (int nI = 0; nI < Layers[0].NeuronsCount; nI++)
-                {
-                    Layers[0].Neurons[nI].InputValue = trainData[0][nI];
-                }
+        StartCoroutine(Train(Convert.ToInt32(EpochCountField.text)));
+    }
+    //Остановить обучение
+    public void StopTrain()
+    {
+        StopAllCoroutines();
 
-                ForwardPropagation();
-
-                BackPropagation(trainData);
-            }
-        }
+        SaveWeights();
     }
 
     private void Start()
