@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 3810
+  controlID: 1471
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 3811
+  controlID: 1401
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 3812
+  controlID: 1402
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -399,9 +399,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 16110000
       m_LastClickedID: 0
-      m_ExpandedIDs: eca7ffff20a8ffff54a8ffff88a8ffffaca8ffff1cbcffff56d7ffff8ad7ffffbed7fffff2d7ffff2cddffffdedeffff52dfffff54dfffff58dfffff5cdfffff78e0ffffece0ffff2ae2ffff38e2ffff40e2ffff44eaffffb8eafffff2ebfffffcebffff00ecffff1cfbffff0472000018720000c2750000
+      m_ExpandedIDs: 1cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -461,9 +461,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 865.00635, y: 571.85406, z: -1838.7058}
+    m_Target: {x: 519.8453, y: 276.3888, z: -1897.9924}
     speed: 2
-    m_Value: {x: 865.00635, y: 571.85406, z: -1838.7058}
+    m_Value: {x: 519.8453, y: 276.3888, z: -1897.9924}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -514,9 +514,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 622.85254
+    m_Target: 387.48657
     speed: 2
-    m_Value: 622.85254
+    m_Value: 387.48657
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -640,22 +640,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Project/Scenes
+    - Assets/Project/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Project/Scenes
+  - Assets/Project/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\sam13\source\repos\NeuralNetworkModel
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e44a0000
-    m_LastClickedID: 19172
-    m_ExpandedIDs: 000000003e490000d24a000000ca9a3b
+    m_SelectedIDs: de4b0000
+    m_LastClickedID: 19422
+    m_ExpandedIDs: 000000006a4a0000da4b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -683,7 +683,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003e49000000ca9a3b
+    m_ExpandedIDs: 000000006a4a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

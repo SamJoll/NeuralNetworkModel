@@ -44,16 +44,7 @@ public class NeuralNetwork : MonoBehaviour
     //Синапсы
     Dictionary<string, LineRenderer> Sinopsises = new Dictionary<string, LineRenderer>();
     //Тренировочный датасет
-    List<double[][]> trainingDataset = new List<double[][]>() { 
-        new double[][] { 
-            new double[] {1, 1},
-            new double[] {1}
-        },
-        new double[][] {
-            new double[] {1, 0},
-            new double[] {0}
-        }
-    };
+    List<double[][]> trainingDataset = new List<double[][]>();
 
     string weightsFilePath;
     string weightsBackupFilePath;
@@ -323,8 +314,9 @@ public class NeuralNetwork : MonoBehaviour
             //Производная сигмоиды
             double derivative_sigmoid = 
                 (1 - Layers[LayersCount - 1].Neurons[nI].OutputValue) * Layers[LayersCount - 1].Neurons[nI].OutputValue;
+
             //Производная ошибки (ideal_Val - sigm(nI))^2
-            double derivative_error = 
+            double derivative_error =
                 -2 * (Layers[LayersCount - 1].Neurons[nI].OutputValue - trainingData[1][nI]) * derivative_sigmoid;
 
             for (int nI_Prev = 0; nI_Prev < Layers[LayersCount-2].NeuronsCount; nI_Prev++)
